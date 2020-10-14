@@ -14,3 +14,4 @@
 - [ ] implement menu in TFT display for change/show temperature 
 - [ ] circuit diagram
 - [ ] create pcb
+- [ ] implement switching with buttons
