@@ -1,4 +1,5 @@
 #include "st7735.h"
+#include "tftfont.h"
 
 void SPI( unsigned char val )        // send character over SPI
 {
@@ -13,7 +14,7 @@ void command( unsigned char cmd ) {
     SPI( cmd );    // set up data on bus
 }
 
-void LCDinit( void ) {
+void LCDinit() {
     rst = 1;            //hardware reset
     __delay_ms( 200 );
     rst = 0;

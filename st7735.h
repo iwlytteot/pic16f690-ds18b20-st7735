@@ -1,6 +1,8 @@
+#ifndef ST7735_H
+#define	ST7735_H
+
 #include "pic16f690.h"
-#include <htc.h>
-#include "tftfont.h"
+#include <xc.h>
 
 #define _XTAL_FREQ 8000000
 
@@ -23,3 +25,5 @@ void rectan( unsigned char x0, unsigned char y0, unsigned char x1, unsigned char
 void pixel( unsigned char x, unsigned char y, unsigned int color );
 
 void draw( unsigned char x, unsigned char y, unsigned char c, unsigned int color, unsigned char size );
+
+#endif
