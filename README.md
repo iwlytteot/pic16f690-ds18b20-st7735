@@ -3,7 +3,7 @@
 ## Requirements
 - PIC16F690 ([ datasheet ](http://ww1.microchip.com/downloads/en/DeviceDoc/40001262F.pdf))
 - DS18B20 digital thermometer ([ datasheet ](https://datasheets.maximintegrated.com/en/ds/DS18B20.pdf))
-- ST7735 display
+- ST7735 display ([ datasheet ](https://www.displayfuture.com/Display/datasheet/controller/ST7735.pdf))
 - bunch of resistors and capacitors
 
 ### Libraries
