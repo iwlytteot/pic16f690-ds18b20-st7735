@@ -32,7 +32,7 @@ void init_pic() {
     ANSELH = 0;            //digital port
     OPTION_REG = 0b11111000;    //tmr0 1:1
     T1CON = 0;        //timer OFF, 1:1
-
+    
     //SPI init
     SSPCON = 0B100000;    //0B100000=full speed, enabled,clock idle=L
     CKE = 1;    //Data transmitted on rising edge of SCK
@@ -54,16 +54,17 @@ int main() {
     Temperature snd;
     strcpy( snd.name, "Pokoj  " );
     memset( &snd.real_temp, 52, 5);
-    memset( &snd.set_temp, 53, 5);
+    memset( &snd.prev_real_temp, 53, 5);
+    memset( &snd.set_temp, 54, 5);
     
-    fst.real_temp[ 2 ] = fst.set_temp[ 2 ] = 46;
-    fst.real_temp[ 4 ] = fst.set_temp[ 4 ] = 123;
+    fst.real_temp[ 2 ] = fst.set_temp[ 2 ] = snd.real_temp[ 2 ] = snd.set_temp[ 2 ] = 46;
+    fst.real_temp[ 4 ] = fst.set_temp[ 4 ] = snd.real_temp[ 4 ] = snd.set_temp[ 4 ] = 123;
     
         
     Screen first;
     first.temp = &fst;
     first.id = 0;
-    first.mode = 1;
+    first.mode = 0;
     
     Screen second;
     second.temp = &snd;
@@ -73,8 +74,21 @@ int main() {
 
     rectan( 0, 0, 128, 128, BLACK );
     
+    int screen_id = 0;
+    
     while( 1 ) {
-        show_screen( &first );
+        if ( 1 ) { // 1 reserved for switch button for change screen (should be implemented via interrupt so we can jump out of sleep mode)
+            rectan( 0, 0, 128, 128, BLACK );
+            if ( screen_id == 0 ) {
+                screen_id = 1;
+                show_screen( &first );
+            }
+            else {
+                screen_id = 0;
+                show_screen( &second );
+            }
+        }
+        __delay_ms( 3000 );
     }
     return 0;
 }

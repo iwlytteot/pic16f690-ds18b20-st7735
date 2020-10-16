@@ -33,7 +33,6 @@ void show_screen( Screen *screen ) {
     if ( screen->mode == 0 ) {
         
         show_temperature( screen->temp, 15, 57 );
-        __delay_ms( 3000 );
         
         for ( int i = 0; i < 5; ++i )
             screen->temp->prev_real_temp[ i ] = screen->temp->real_temp[ i ];
@@ -63,7 +62,6 @@ void show_screen( Screen *screen ) {
         screen->temp->set_temp[0] = ( ( integer_part / 10 ) % 10 ) + 48;
         screen->temp->set_temp[1] = ( integer_part % 10 ) + 48;
         show_set_temperature( screen->temp, 15, 57 );
-        __delay_ms( 35 );
     }    
 }
 
