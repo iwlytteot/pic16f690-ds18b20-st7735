@@ -19,9 +19,10 @@ void show_temperature( Temperature *temperature, int x, int y ) {
 }
 
 void show_screen( Screen *screen ) {
+    show_name( screen->temp, 0, 5, 0 );
+    
     /* view mode  */
     if ( screen->mode == 0 ) {
-        show_name( screen->temp, 0, 5, 0 );
         
         show_temperature( screen->temp, 15, 57 );
         __delay_ms( 3000 );
@@ -34,11 +35,7 @@ void show_screen( Screen *screen ) {
     
     /* temperature change mode */
     if ( screen->mode == 1 ) {
-        if ( screen->align == 0 )
-            draw( 15 + 22 * ( screen->align + 3 ), 62, 95, 0x0000, 3 );
-        else
-            draw( 15 + 22 * ( screen->align - 1 ), 62, 95, 0x0000, 3 );
-        draw( 15 + 22 * ( screen->align ), 62, 95, 0xFFE0, 3 );
+        return;
     }    
 }
 

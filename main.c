@@ -47,14 +47,14 @@ int main() {
        
     Temperature fst;
     strcpy( fst.name, "Podlaha" );
-    memset( &fst.real_temp, 50, 6);
-    memset( &fst.prev_real_temp, 50, 6);
-    memset( &fst.set_temp, 51, 6);
+    memset( &fst.real_temp, 50, 5);
+    memset( &fst.prev_real_temp, 50, 5);
+    memset( &fst.set_temp, 51, 5);
     
     Temperature snd;
     strcpy( snd.name, "Pokoj  " );
-    memset( &snd.real_temp, 52, 6);
-    memset( &snd.set_temp, 53, 6);
+    memset( &snd.real_temp, 52, 5);
+    memset( &snd.set_temp, 53, 5);
     
     fst.real_temp[ 2 ] = fst.set_temp[ 2 ] = 46;
     fst.real_temp[ 4 ] = fst.set_temp[ 4 ] = 123;
@@ -64,13 +64,11 @@ int main() {
     first.temp = &fst;
     first.id = 0;
     first.mode = 0;
-    first.align = 0;
     
     Screen second;
     second.temp = &snd;
     second.id = 0;
     second.mode = 0;
-    second.align = 0;
     
 
     rectan( 0, 0, 128, 128, BLACK );
@@ -78,24 +76,6 @@ int main() {
     while( 1 ) {
         show_screen( &first );
     }
-        
-    
-    /*
-    while ( 1 ) {
-        for ( int i = 0; i < 5; ++i ) {
-            if ( temp[ i ] != prev_temp[ i ] ) {
-                draw( 0 + ( i * 18 ), 64, prev_temp[ i ], BLACK, 2 );
-                draw( 0 + ( i * 18 ), 64, temp[ i ], RED, 2 );
-            }
-        }
-        __delay_ms( 3000 );
-
-        for ( int i = 0; i < 5; ++i )
-            prev_temp[ i ] = temp[ i ];
-
-        read_temperature();
-    }
-    */
     return 0;
 }
 

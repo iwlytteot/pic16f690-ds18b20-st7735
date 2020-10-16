@@ -21,7 +21,6 @@ typedef struct Screen {
     Temperature *temp;
     int id;
     int mode;
-    int align;
 } Screen;
 
 void show_screen( Screen * );
