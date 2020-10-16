@@ -8,8 +8,10 @@
 #pragma config IESO = ON        // Internal External Switchover bit (Internal External Switchover mode is enabled)
 #pragma config FCMEN = ON       // Fail-Safe Clock Monitor Enabled bit (Fail-Safe Clock Monitor is enabled)
 
+#include <string.h>
 #include "ds18b20.h"
 #include "st7735.h"
+#include "st7735UI.h"
 
 #define BLACK   0x0000
 #define BLUE    0x001F
@@ -19,10 +21,6 @@
 #define MAGENTA 0xF81F
 #define YELLOW  0xFFE0
 #define WHITE   0xFFFF
-
-uint16_t raw_temp;
-unsigned char temp[6] = { 0, 0, 0, 0, 0, 0 };
-unsigned char prev_temp[6] = { 0, 0, 0, 0, 0, 0 };
 
 void init_pic() {
     OSCCON = 0x70;
@@ -41,37 +39,50 @@ void init_pic() {
     rst = 1;
 }
 
-void read_temperature() {
-    if ( ds18b20_read( &raw_temp )) {
-        if ( raw_temp & 0x8000 )  // if the temperature is negative
-        {
-            temp[ 0 ] = 45;             // put minus sign (-)
-            raw_temp = ( ~raw_temp ) + 1;  // change temperature value to positive form
-        } else {
-            if (( raw_temp >> 4 ) >= 100 )  // if the temperature >= 100 �C
-                temp[ 0 ] = 17;            // put 1 of hundreds
-            else                        // otherwise
-                temp[ 0 ] = 0;            // put space ' '
-        }
-
-        temp[ 1 ] = ((( raw_temp >> 4 ) / 10 ) % 10 ) + 48;  // put tens digit
-        temp[ 2 ] = (( raw_temp >> 4 ) % 10 ) + 48;  // put ones digit
-        temp[ 3 ] = 46;
-        temp[ 4 ] = ((( raw_temp & 0x0F ) * 625 ) / 1000 ) + 48; // put thousands digit
-        temp[ 5 ] = 123;
-    } else {
-        temp[ 0 ] = 10;
-    }
-}
-
 int main() {
     init_pic();
     LCDinit();
+    
+    rectan( 0, 0, 128, 128, BLACK );
+       
+    Temperature fst;
+    strcpy( fst.name, "Podlaha" );
+    memset( &fst.real_temp, 50, 6);
+    memset( &fst.prev_real_temp, 50, 6);
+    memset( &fst.set_temp, 51, 6);
+    
+    Temperature snd;
+    strcpy( snd.name, "Pokoj  " );
+    memset( &snd.real_temp, 52, 6);
+    memset( &snd.set_temp, 53, 6);
+    
+    fst.real_temp[ 2 ] = fst.set_temp[ 2 ] = 46;
+    fst.real_temp[ 4 ] = fst.set_temp[ 4 ] = 123;
+    
+        
+    Screen first;
+    first.temp = &fst;
+    first.id = 0;
+    first.mode = 0;
+    first.align = 0;
+    
+    Screen second;
+    second.temp = &snd;
+    second.id = 0;
+    second.mode = 0;
+    second.align = 0;
+    
 
     rectan( 0, 0, 128, 128, BLACK );
-
+    
+    while( 1 ) {
+        show_screen( &first );
+    }
+        
+    
+    /*
     while ( 1 ) {
-        for ( int i = 0; i < 6; ++i ) {
+        for ( int i = 0; i < 5; ++i ) {
             if ( temp[ i ] != prev_temp[ i ] ) {
                 draw( 0 + ( i * 18 ), 64, prev_temp[ i ], BLACK, 2 );
                 draw( 0 + ( i * 18 ), 64, temp[ i ], RED, 2 );
@@ -79,11 +90,12 @@ int main() {
         }
         __delay_ms( 3000 );
 
-        for ( int i = 0; i < 6; ++i )
+        for ( int i = 0; i < 5; ++i )
             prev_temp[ i ] = temp[ i ];
 
         read_temperature();
     }
+    */
     return 0;
 }
 

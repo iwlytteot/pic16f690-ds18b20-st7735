@@ -10,6 +10,8 @@
 #define DS18B20_PIN      RA2
 #define DS18B20_PIN_Dir  TRISA2
 
+uint16_t raw_temp;
+
 __bit ds18b20_start();
 
 void ds18b20_write_bit( uint8_t );
@@ -21,5 +23,7 @@ __bit ds18b20_read_bit();
 uint8_t ds18b20_read_byte();
 
 __bit ds18b20_read( uint16_t * );
+
+void read_temperature( unsigned char * );
 
 #endif

@@ -80,3 +80,19 @@ __bit ds18b20_read( uint16_t *raw_temp_value ) {
 
     return 1;   // OK --> return 1
 }
+
+
+void read_temperature( unsigned char *temp ) {
+    if ( ds18b20_read( &raw_temp )) {
+        if ( raw_temp & 0x8000 )  // if the temperature is negative
+            raw_temp = ( ~raw_temp ) + 1;  // change temperature value to positive form
+       
+        temp[ 0 ] = ((( raw_temp >> 4 ) / 10 ) % 10 ) + 48;  // put tens digit
+        temp[ 1 ] = (( raw_temp >> 4 ) % 10 ) + 48;  // put ones digit
+        temp[ 2 ] = 46;
+        temp[ 3 ] = ((( raw_temp & 0x0F ) * 625 ) / 1000 ) + 48; // put thousands digit
+        temp[ 4 ] = 123;
+    } else {
+        temp[ 0 ] = 10;
+    }
+}
