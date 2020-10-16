@@ -35,7 +35,35 @@ void show_screen( Screen *screen ) {
     
     /* temperature change mode */
     if ( screen->mode == 1 ) {
-        return;
+        if ( 1 ) {  // 1 is prepared for button trigger UP
+            if ( screen->temp->set_temp[ 3 ] == 57 ) { 
+                if ( screen->temp->set_temp[ 1 ] == 57 ) {
+                    ++screen->temp->set_temp[ 0 ];
+                    screen->temp->set_temp[ 1 ] = 48; 
+                } else {
+                    ++screen->temp->set_temp[ 1 ];
+                }
+                screen->temp->set_temp[ 3 ] == 48;
+            }
+            else if ( screen->temp->set_temp[ 3 ] != 57 ) {
+                ++screen->temp->set_temp[ 3 ];
+            }
+        }
+        
+        if ( 0 ) {  // 0 is prepared for button trigger DOWN
+            if ( screen->temp->set_temp[ 3 ] == 48 ) { 
+                if ( screen->temp->set_temp[ 1 ] == 48 ) {
+                    --screen->temp->set_temp[ 0 ];
+                    screen->temp->set_temp[ 1 ] = 57; 
+                } else {
+                    --screen->temp->set_temp[ 1 ];
+                }
+                    screen->temp->set_temp[ 3 ] == 57;
+            }
+            else if ( screen->temp->set_temp[ 3 ] != 48 ) {
+                --screen->temp->set_temp[ 3 ];
+            } 
+        }
     }    
 }
 
