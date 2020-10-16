@@ -19,7 +19,7 @@ void show_temperature( Temperature *temperature, int x, int y ) {
 }
 
 void show_screen( Screen *screen ) {
-    /* view mode */
+    /* view mode  */
     if ( screen->mode == 0 ) {
         show_name( screen->temp, 0, 5, 0 );
         
