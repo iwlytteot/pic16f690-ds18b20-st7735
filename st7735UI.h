@@ -15,6 +15,7 @@ typedef struct Temperature {
     unsigned char real_temp[ 5 ];
     unsigned char prev_real_temp[ 5 ];
     unsigned char set_temp[ 5 ];
+    unsigned char prev_set_temp[ 5 ];
 } Temperature; 
 
 typedef struct Screen {
@@ -26,6 +27,8 @@ typedef struct Screen {
 void show_screen( Screen * );
 
 void show_temperature( Temperature *, int, int );
+
+void show_set_temperature( Temperature *, int, int );
 
 void show_name( Temperature *, int, int, int );
 

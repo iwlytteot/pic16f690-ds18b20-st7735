@@ -14,8 +14,16 @@ void show_temperature( Temperature *temperature, int x, int y ) {
                 draw( x + ( i * 22 ), y, temperature->prev_real_temp[ i ], 0x0000, 3 );
             }
         draw( x + ( i * 22 ), y, temperature->real_temp[ i ], 0x07FF, 3 );
-    }
-    
+    } 
+}
+
+void show_set_temperature( Temperature *temperature, int x, int y ) {
+    for ( int i = 0; i < 5; ++i) { 
+        if ( temperature->prev_set_temp[ i ] != temperature->set_temp[ i ] ) {
+                draw( x + ( i * 22 ), y, temperature->prev_set_temp[ i ], 0x0000, 3 );
+            }
+        draw( x + ( i * 22 ), y, temperature->set_temp[ i ], 0x07FF, 3 );
+    } 
 }
 
 void show_screen( Screen *screen ) {
@@ -35,15 +43,17 @@ void show_screen( Screen *screen ) {
     
     /* temperature change mode */
     if ( screen->mode == 1 ) {
+        for ( int i = 0; i < 5; ++i )
+            screen->temp->prev_set_temp[ i ] = screen->temp->set_temp[ i ];
         if ( 1 ) {  // 1 is prepared for button trigger UP
-            if ( screen->temp->set_temp[ 3 ] == 57 ) { 
-                if ( screen->temp->set_temp[ 1 ] == 57 ) {
+            if ( screen->temp->set_temp[ 3 ] == 57 ) { // eg. 18.9
+                if ( screen->temp->set_temp[ 1 ] == 57 ) { //eg 19.9
                     ++screen->temp->set_temp[ 0 ];
                     screen->temp->set_temp[ 1 ] = 48; 
                 } else {
                     ++screen->temp->set_temp[ 1 ];
                 }
-                screen->temp->set_temp[ 3 ] == 48;
+                screen->temp->set_temp[ 3 ] = 48;
             }
             else if ( screen->temp->set_temp[ 3 ] != 57 ) {
                 ++screen->temp->set_temp[ 3 ];
@@ -51,19 +61,21 @@ void show_screen( Screen *screen ) {
         }
         
         if ( 0 ) {  // 0 is prepared for button trigger DOWN
-            if ( screen->temp->set_temp[ 3 ] == 48 ) { 
+            if ( screen->temp->set_temp[ 3 ] == 48 ) { //
                 if ( screen->temp->set_temp[ 1 ] == 48 ) {
                     --screen->temp->set_temp[ 0 ];
                     screen->temp->set_temp[ 1 ] = 57; 
                 } else {
                     --screen->temp->set_temp[ 1 ];
                 }
-                    screen->temp->set_temp[ 3 ] == 57;
+                    screen->temp->set_temp[ 3 ] = 57;
             }
             else if ( screen->temp->set_temp[ 3 ] != 48 ) {
                 --screen->temp->set_temp[ 3 ];
             } 
         }
+        show_set_temperature( screen->temp, 15, 57 );
+        __delay_ms( 100 );
     }    
 }
 

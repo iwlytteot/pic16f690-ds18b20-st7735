@@ -63,7 +63,7 @@ int main() {
     Screen first;
     first.temp = &fst;
     first.id = 0;
-    first.mode = 1;
+    first.mode = 0;
     
     Screen second;
     second.temp = &snd;
