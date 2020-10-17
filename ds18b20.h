@@ -7,8 +7,8 @@
 #include <xc.h>
 
 #define _XTAL_FREQ 8000000
-#define DS18B20_PIN      RA2
-#define DS18B20_PIN_Dir  TRISA2
+#define DS18B20_PIN      RC5
+#define DS18B20_PIN_Dir  TRISC5
 
 uint16_t raw_temp;
 

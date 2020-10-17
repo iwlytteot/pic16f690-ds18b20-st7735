@@ -83,7 +83,7 @@ __bit ds18b20_read( uint16_t *raw_temp_value ) {
 
 
 void read_temperature( unsigned char *temp ) {
-    if ( ds18b20_read( &raw_temp )) {
+    if ( ds18b20_read( &raw_temp ) ) {
         if ( raw_temp & 0x8000 )  // if the temperature is negative
             raw_temp = ( ~raw_temp ) + 1;  // change temperature value to positive form
        

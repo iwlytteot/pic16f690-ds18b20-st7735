@@ -14,7 +14,7 @@ void SPI( unsigned char val );
 
 void command( unsigned char cmd );
 
-void LCDinit();
+void LCDinit( void );
 
 void send_data( unsigned char data );
 
