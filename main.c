@@ -68,44 +68,42 @@ void init_pic() {
     rst = 1;
 }
 
+void init_temp( Temperature *obj, char *name ) {
+    strcpy( obj->name, name );
+    memset( &obj->real_temp, 49, 5);
+    memset( &obj->prev_real_temp, 49, 5);
+    memset( &obj->set_temp, 49, 5);
+    memset( &obj->prev_set_temp, 49, 5);
+    obj->real_temp[ 2 ] = obj->set_temp[ 2 ] = 46;
+    obj->real_temp[ 4 ] = obj->set_temp[ 4 ] = 123;
+}
+
+void init_screen( Screen *screen, Temperature *temperature ) {
+    screen->temp = temperature;
+    screen->id = 0;
+    screen->mode = 0;
+}
+
 int main() {
     init_pic();
     LCDinit();
     
-    rectan( 0, 0, 128, 128, BLACK );
     Temperature fst;
-    strcpy( fst.name, "Podlaha" );
-    memset( &fst.real_temp, 50, 5);
-    memset( &fst.prev_real_temp, 50, 5);
-    memset( &fst.set_temp, 51, 5);
-    
     Temperature snd;
-    strcpy( snd.name, "Pokoj  " );
-    memset( &snd.real_temp, 52, 5);
-    memset( &snd.prev_real_temp, 53, 5);
-    memset( &snd.set_temp, 54, 5);
-
-    fst.real_temp[ 2 ] = fst.set_temp[ 2 ] = snd.real_temp[ 2 ] = snd.set_temp[ 2 ] = 46;
-    fst.real_temp[ 4 ] = fst.set_temp[ 4 ] = snd.real_temp[ 4 ] = snd.set_temp[ 4 ] = 123;
-    
+    init_temp( &fst, "Pokoj  " );
+    init_temp( &snd, "Podlaha" );
         
-    Screen first;
-    first.temp = &fst;
-    first.id = 0;
-    first.mode = 0;
-    
+    Screen first; 
     Screen second;
-    second.temp = &snd;
-    second.id = 0;
-    second.mode = 0;
-
+    init_screen( &first, &fst );
+    init_screen( &second, &snd );
 
     Screen *current_screen = &first;
     
     rectan( 0, 0, 128, 128, BLACK );
     show_screen( &first );
     int screen_id = 0;
-    WDTCON = 0b01101;  
+    WDTCON = 0b01101;  // Enabling watchdog timer with prescaler
     
     while ( 1 ) { 
         if ( CHANGE == 1 ) {
