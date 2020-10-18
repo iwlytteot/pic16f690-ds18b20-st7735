@@ -9,6 +9,7 @@
 #define	ST7735UI_H
 #define BUTTON_UP_F     PORTCbits.RC3
 #define BUTTON_DOWN_F   PORTCbits.RC4
+#define BUTTON_SET_F    PORTBbits.RB4
 
 #include <xc.h>
 

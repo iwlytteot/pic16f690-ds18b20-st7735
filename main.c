@@ -124,6 +124,9 @@ int main() {
         else if ( CHANGE == 2 ) {
             current_screen->mode = 1;
             rectan( 0, 0, 128, 128, BLACK );
+            show_screen( current_screen );
+            rectan( 0, 0, 128, 128, BLACK );
+            current_screen->mode = 0;
             CHANGE = 0;  
         }
         show_screen( current_screen );

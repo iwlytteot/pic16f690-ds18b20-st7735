@@ -44,7 +44,7 @@ void show_screen( Screen *screen ) {
     /* temperature change mode */
     if ( screen->mode == 1 ) {
         WDTCON = 0; // Turning OFF Watchdog timer, as we do not need him here
-        while ( 1 ) {
+        while ( BUTTON_SET_F ) {
             for ( int i = 0; i < 5; ++i )
                 screen->temp->prev_set_temp[ i ] = screen->temp->set_temp[ i ];
 
