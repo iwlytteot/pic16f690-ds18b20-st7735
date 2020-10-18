@@ -22,14 +22,22 @@
 #define YELLOW  0xFFE0
 #define WHITE   0xFFFF
 
+#define BUTTON_SWAP     TRISBbits.TRISB7
+#define BUTTON_SWAP_F   PORTBbits.RB7
+#define BUTTON_SET      TRISBbits.TRISB4
+#define BUTTON_SET_F    PORTBbits.RB4
+#define BUTTON_UP       TRISCbits.TRISC3
+#define BUTTON_DOWN     TRISCbits.TRISC4
+
+
 int CHANGE = 0;
 
 void __interrupt() isr() {
     if ( INTCONbits.RABIF == 1 ) {
-        if ( PORTBbits.RB7 == 0 ) {
+        if ( BUTTON_SWAP_F == 0 ) {
            CHANGE = 1; 
         }        
-        if ( PORTBbits.RB4 == 0 ) {
+        if ( BUTTON_SET_F == 0 ) {
             CHANGE = 2;
         }
         INTCONbits.RABIF = 0;
@@ -39,8 +47,10 @@ void __interrupt() isr() {
 void init_pic() {
     OSCCON = 0x70;
     TRISC = 0; 
-    TRISBbits.TRISB4 = 1;
-    TRISBbits.TRISB7 = 1;
+    BUTTON_SWAP = 1;
+    BUTTON_SET = 1;
+    BUTTON_UP = 1;
+    BUTTON_DOWN = 1;
     TRISB5 = 0;
     TRISB6 = 0;
     ANSEL = 0;            //digital port

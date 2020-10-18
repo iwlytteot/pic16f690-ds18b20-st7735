@@ -43,26 +43,30 @@ void show_screen( Screen *screen ) {
     
     /* temperature change mode */
     if ( screen->mode == 1 ) {
-        for ( int i = 0; i < 5; ++i )
-            screen->temp->prev_set_temp[ i ] = screen->temp->set_temp[ i ];
-        
-        int integer_part = ( screen->temp->set_temp[0] - 48 ) * 10 + ( screen->temp->set_temp[1] - 48 );
-        if ( 0 ) { // 1 is prepared for button trigger UP
-            if ( screen->temp->set_temp[ 3 ]++ == 57 ) { //eg 18.9
-                ++integer_part;
-                screen->temp->set_temp[ 3 ] = 48;
+        WDTCON = 0; // Turning OFF Watchdog timer, as we do not need him here
+        while ( 1 ) {
+            for ( int i = 0; i < 5; ++i )
+                screen->temp->prev_set_temp[ i ] = screen->temp->set_temp[ i ];
+
+            int integer_part = ( screen->temp->set_temp[0] - 48 ) * 10 + ( screen->temp->set_temp[1] - 48 );
+            if ( !BUTTON_UP_F ) {
+                if ( screen->temp->set_temp[ 3 ]++ == 57 ) { //eg 18.9
+                    ++integer_part;
+                    screen->temp->set_temp[ 3 ] = 48;
+                }
             }
-        }
-        if ( 1 ) { // 1 is prepared for button trigger UP
-            if ( screen->temp->set_temp[ 3 ]-- == 48 ) {
-                --integer_part;
-                screen->temp->set_temp[ 3 ] = 57;
+            if ( !BUTTON_DOWN_F ) {
+                if ( screen->temp->set_temp[ 3 ]-- == 48 ) {
+                    --integer_part;
+                    screen->temp->set_temp[ 3 ] = 57;
+                }
             }
+
+            screen->temp->set_temp[0] = ( ( integer_part / 10 ) % 10 ) + 48;
+            screen->temp->set_temp[1] = ( integer_part % 10 ) + 48;
+            show_set_temperature( screen->temp, 15, 57 );
         }
-        
-        screen->temp->set_temp[0] = ( ( integer_part / 10 ) % 10 ) + 48;
-        screen->temp->set_temp[1] = ( integer_part % 10 ) + 48;
-        show_set_temperature( screen->temp, 15, 57 );
+        WDTCON = 0b01101; //Turning Watchdog timer back ON
     }    
 }
 
