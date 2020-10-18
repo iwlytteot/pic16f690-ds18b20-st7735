@@ -32,12 +32,13 @@ void show_screen( Screen *screen ) {
     /* view mode  */
     if ( screen->mode == 0 ) {
         
-        show_temperature( screen->temp, 15, 57 );
-        
         for ( int i = 0; i < 5; ++i )
             screen->temp->prev_real_temp[ i ] = screen->temp->real_temp[ i ];
 
-        read_temperature( screen->temp->real_temp );               
+        read_temperature( screen->temp->real_temp );          
+        
+        show_temperature( screen->temp, 15, 57 );
+
     }
     
     /* temperature change mode */

@@ -25,28 +25,31 @@
 int CHANGE = 0;
 
 void __interrupt() isr() {
-    if( INTCONbits.INTF == 1 ) {
-        INTCONbits.INTF = 0;    
-        CHANGE = 1;
+    if ( INTCONbits.RABIF == 1 ) {
+        if ( PORTBbits.RB7 == 0 ) {
+           CHANGE = 1; 
+        }        
+        if ( PORTBbits.RB4 == 0 ) {
+            CHANGE = 2;
+        }
+        INTCONbits.RABIF = 0;
     }
 }
 
 void init_pic() {
     OSCCON = 0x70;
     TRISC = 0; 
+    TRISBbits.TRISB4 = 1;
+    TRISBbits.TRISB7 = 1;
     TRISB5 = 0;
     TRISB6 = 0;
-    TRISB7 = 0;
     ANSEL = 0;            //digital port
     ANSELH = 0;            //digital port
-    //OPTION_REG = 0b11111000;    //tmr0 1:1
     OPTION_REG = 0b00001111;    //tmr0 1:1
-    //T1CON = 0;        //timer OFF, 1:1
     
-    INTCONbits.INTF = 0;        //reset the external interrupt flag
     OPTION_REGbits.INTEDG = 1;  //interrupt on the rising edge
-    INTCONbits.INTE = 1;        //enable the external interrupt
-    INTCONbits.GIE = 1;         //set the Global Interrupt Enable
+    INTCON = 0b11011000;
+    IOCB = 0b10010000;
 
     
     //SPI init
@@ -95,8 +98,8 @@ int main() {
     WDTCON = 0b01101;  
     
     while ( 1 ) { 
-        if ( CHANGE ) {
-            rectan( 0, 0, 128, 128, BLACK );
+        if ( CHANGE == 1 ) {
+            current_screen->mode = 0;
             if ( screen_id == 0 ) {
                 screen_id = 1;
                 current_screen = &second;
@@ -105,31 +108,18 @@ int main() {
                 screen_id = 0;
                 current_screen = &first;
             }
-            CHANGE = 0;
+            rectan( 0, 0, 128, 128, BLACK );
+            CHANGE = 0;  
+        } 
+        else if ( CHANGE == 2 ) {
+            current_screen->mode = 1;
+            rectan( 0, 0, 128, 128, BLACK );
+            CHANGE = 0;  
         }
         show_screen( current_screen );
         SLEEP();
-       
     }
-    /*
-    while( 1 ) { 
-        if ( PORTCbits.RC6 == 1 ) { // 1 reserved for switch button for change screen (should be implemented via interrupt so we can jump out of sleep mode)
-            __delay_ms( 50 );
-            if ( PORTCbits.RC6 == 1 ) {
-                rectan( 0, 0, 128, 128, BLACK );
-                if ( screen_id == 0 ) {
-                    screen_id = 1;
-                    show_screen( &second );
-                }
-                else {
-                    screen_id = 0;
-                    show_screen( &first );
-                }
-            }
-        }
-        __delay_ms( 1000 );
-    }
-    */
+    
     return 0;
 }
 
