@@ -11,7 +11,7 @@
 - [ ST7735 ](http://www.moty22.co.uk/tft_counter.php) - small refactor
 
 # TODO 
-- [ ] implement menu in TFT display for change/show temperature 
+- [x] implement menu in TFT display for change/show temperature 
 - [ ] circuit diagram
 - [ ] create pcb
 - [x] implement switching with buttons
